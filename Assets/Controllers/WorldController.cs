@@ -25,7 +25,7 @@ public class WorldController : MonoBehaviour {
 		mouseController.OnTileClick = (Vector3 coordinates) => {
 			if (coordinates.x == player.X && coordinates.y == player.Y) {
 				player.Rotate();
-			} else {
+			} else if (world.GetTileAt((int) coordinates.x,(int) coordinates.y).Type == Tile.TileType.Empty) {
 				world.MoveEntity(player, coordinates);
 			}
 				
