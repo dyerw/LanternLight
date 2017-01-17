@@ -73,6 +73,15 @@ public class World {
 		}
 	}
 
+	public bool ContainsEnemy(Vector3 position) {
+		foreach (Entity enemy in EnemyEntities) {
+			if (enemy.X == position.x && enemy.Y == position.y) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void EndTurn() {
 		foreach (Entity entity in Entities) {
 			entity.Stats.RemainingMovement = entity.Stats.MovementRange;

@@ -9,6 +9,9 @@ public class MouseController : MonoBehaviour
 	Vector3 lastFramePosition;
 	public Action<Vector3> OnTileClick { get; set; }
 	public GameObject mouseCursor { get; set; }
+	public Sprite enemyCursorSprite { get; set; }
+	public Sprite cursorSprite { get; set; }
+	public World      world { get; set; }
 
 	// Use this for initialization
 	void Start ()
@@ -52,7 +55,10 @@ public class MouseController : MonoBehaviour
 	}
 
 	void UpdateMouseCursor() {
-		Vector3 mousePosition = GameCoordinatesOfMouse(); 
+		Vector3 mousePosition = GameCoordinatesOfMouse();
+		bool containsEnemy = world.ContainsEnemy (mousePosition);
+		mouseCursor.GetComponent<SpriteRenderer> ().sprite = containsEnemy ? enemyCursorSprite : cursorSprite;
+
 		mouseCursor.transform.position = new Vector3 (mousePosition.x, mousePosition.y, -1);
 	}
 }

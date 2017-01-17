@@ -9,6 +9,7 @@ public class WorldController : MonoBehaviour {
 	World world;
 
 	public Sprite mouseCursorSprite;
+	public Sprite enemyMouseCursorSprite;
 
 	// Use this for initialization
 	void Start () {
@@ -22,6 +23,7 @@ public class WorldController : MonoBehaviour {
 
 		GameObject mouseControllerGameObject = new GameObject ();
 		mouseController = mouseControllerGameObject.AddComponent<MouseController> ();
+		mouseController.world = world;
 		mouseController.OnTileClick = (Vector3 coordinates) => {
 			if (coordinates.x == player.X && coordinates.y == player.Y) {
 				player.Rotate();
@@ -37,7 +39,10 @@ public class WorldController : MonoBehaviour {
 		SpriteRenderer cursorSpriteRenderer = cursorObject.AddComponent<SpriteRenderer> ();
 		cursorSpriteRenderer.sprite = mouseCursorSprite;
 		mouseController.mouseCursor = cursorObject;
-		cursorObject.transform.SetParent (this.transform, true); 
+		cursorObject.transform.SetParent (this.transform, true);
+
+		mouseController.enemyCursorSprite = enemyMouseCursorSprite;
+		mouseController.cursorSprite = mouseCursorSprite;
 
 		worldView = new WorldView ();
 		renderGameObjects ();
