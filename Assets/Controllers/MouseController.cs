@@ -8,6 +8,7 @@ public class MouseController : MonoBehaviour
 
 	Vector3 lastFramePosition;
 	public Action<Vector3> OnTileClick { get; set; }
+	public GameObject mouseCursor { get; set; }
 
 	// Use this for initialization
 	void Start ()
@@ -18,6 +19,8 @@ public class MouseController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+		UpdateMouseCursor ();
+
 		Vector3 currFramePosition = Camera.main.ScreenToWorldPoint( Input.mousePosition );
 		currFramePosition.z = 0;
 
@@ -36,12 +39,22 @@ public class MouseController : MonoBehaviour
 			if (EventSystem.current.IsPointerOverGameObject ()) {
 				return;
 			}
-			Vector3 coordinates = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-			coordinates.x = Mathf.Floor (coordinates.x);
-			coordinates.y = Mathf.Floor (coordinates.y);
-			OnTileClick (coordinates);
+			OnTileClick (GameCoordinatesOfMouse());
 		}
 
+	}
+
+	Vector3 GameCoordinatesOfMouse() {
+		Vector3 coordinates = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+		Debug.Log (coordinates);
+		coordinates.x = Mathf.Floor (coordinates.x + 0.5f);
+		coordinates.y = Mathf.Floor (coordinates.y + 0.5f);
+		return coordinates;
+	}
+
+	void UpdateMouseCursor() {
+		Vector3 mousePosition = GameCoordinatesOfMouse(); 
+		mouseCursor.transform.position = new Vector3 (mousePosition.x, mousePosition.y, -1);
 	}
 }
 

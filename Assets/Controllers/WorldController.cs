@@ -8,6 +8,8 @@ public class WorldController : MonoBehaviour {
 	WorldView worldView;
 	World world;
 
+	public Sprite mouseCursorSprite;
+
 	// Use this for initialization
 	void Start () {
 		Debug.Log ("Starting game...");
@@ -24,7 +26,13 @@ public class WorldController : MonoBehaviour {
 			world.MoveEntity(player, coordinates);
 			renderGameObjects();
 		};
-			
+
+		// Setup up cursor object
+		GameObject cursorObject = new GameObject();
+		SpriteRenderer cursorSpriteRenderer = cursorObject.AddComponent<SpriteRenderer> ();
+		cursorSpriteRenderer.sprite = mouseCursorSprite;
+		mouseController.mouseCursor = cursorObject;
+		cursorObject.transform.SetParent (this.transform, true); 
 
 		worldView = new WorldView ();
 		renderGameObjects ();
@@ -32,7 +40,9 @@ public class WorldController : MonoBehaviour {
 
 	void renderGameObjects() {
 		foreach (Transform child in this.transform) {
-			GameObject.Destroy(child.gameObject);
+			if (child != mouseController.mouseCursor.transform) {
+				GameObject.Destroy (child.gameObject);
+			}
 		}
 
 		List<GameObject> gameObjects = worldView.GenerateView (this.world, world.Entities[0]);
