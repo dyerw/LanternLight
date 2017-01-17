@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Pathfinding;
 
 public class WorldController : MonoBehaviour {
 
 	MouseController mouseController;
 	WorldView worldView;
 	World world;
+	private SpatialAStar<SearchPathNode, Object> aStar;
 
 	public Sprite mouseCursorSprite;
 
@@ -18,7 +20,6 @@ public class WorldController : MonoBehaviour {
 		List<Entity> enemies = new List<Entity> ();
 		enemies.Add(new Entity(Entity.EntityType.WEREWOLF, 11, 15));
 		world = new World (player, enemies);
-
 
 		GameObject mouseControllerGameObject = new GameObject ();
 		mouseController = mouseControllerGameObject.AddComponent<MouseController> ();
@@ -64,6 +65,20 @@ public class WorldController : MonoBehaviour {
 	public void OnEndTurnButtonClicked() {
 		world.EndTurn ();
 		renderGameObjects ();
+	}
+
+	public SpatialAStar<SearchPathNode, Object> GetAStarInstance() {
+		if (aStar != null) {
+			return aStar;
+		}
+
+		SearchPathNode[,] searchGrid = new SearchPathNode[world.Width, world.Height];
+		for(int x = 0; x < world.Width; x++){
+			for(int y = 0; y < world.Height; y++){
+				searchGrid [x, y] = new SearchPathNode (world.GetTileAt (x, y));
+			}
+		}
+		return new SpatialAStar<SearchPathNode, Object> (searchGrid);
 	}
 
 }

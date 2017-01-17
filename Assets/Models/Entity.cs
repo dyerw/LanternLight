@@ -38,7 +38,11 @@ public class Entity {
 
 		List<Vector2> removedTiles = new List<Vector2> ();
 		foreach (Vector2 position in visiblePoints) {
-			if (IsBlocked(world, position)) {
+//			if (world.GetTileAt (position.x, position.y).Type != Tile.TileType.Empty) {
+//				BlockHidden
+//			}
+			if (world.GetTileAt ((int) position.x, (int) position.y).Type != Tile.TileType.Empty &&
+				IsBlocked(world, position)) {
 				removedTiles.Add(position);
 			}
 		}
@@ -48,6 +52,11 @@ public class Entity {
 
 		return visiblePoints;
 
+	}
+
+	public void BlockCastPoints(World world) {
+		
+	
 	}
 
 	public bool InCone(int entityX, int entityY, int targetX, int targetY) {
@@ -65,20 +74,18 @@ public class Entity {
 				return true;
 		}
 	}
+		
 
-	public bool IsBlocked(World world, Vector2 position) {
-
-//		float deltaX = position.x - X;
-//		float deltaY = position.y - Y;
-//
-//		Debug.DrawRay (new Vector3 (X, Y, 0), new Vector3 (deltaX, deltaY, 0), Color.green, 100f, false);
-//
-//		RaycastHit2D hit = Physics2D.Raycast (new Vector2 (X, Y), new Vector2(deltaX, deltaY));
-//
-//		Debug.Log (hit.collider) ;
+	public bool IsBlocked(World world, Vector2 targetPosition) {
+		Vector2 startPos = new Vector2 (X, Y);
+		int tileDist = Vector2.Distance (startPos, targetPosition);
+		int pathDist = WorldController.GetAStarInstance()
+			.Search(startPos, targetPosition, null).Count;
 
 		return false;
 	}
+
+
 
 	public void Rotate() {
 		switch (this.CurrentFacing) {
