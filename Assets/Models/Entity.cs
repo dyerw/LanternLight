@@ -3,19 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Entity {
+	public enum EntityType { PLAYER, WEREWOLF }
 	public enum Facing { UP, DOWN, LEFT, RIGHT };
 
 	public Facing CurrentFacing;
+	public EntityType Type;
 
 	public int X { get; set; }
 	public int Y { get; set; }
 
 	public Stats Stats;
 
-	public Entity(int x, int y) {
+	public Entity(EntityType type, int x, int y) {
 		X = x;
 		Y = y;
 		CurrentFacing = Facing.RIGHT;
+		Type = type;
 
 		Stats = new Stats (8);
 	}
@@ -31,6 +34,16 @@ public class Entity {
 					visiblePoints.Add (new Vector2 (x, y));
 				}
 			}
+		}
+
+		List<Vector2> removedTiles = new List<Vector2> ();
+		foreach (Vector2 position in visiblePoints) {
+			if (IsBlocked(world, position)) {
+				removedTiles.Add(position);
+			}
+		}
+		foreach (Vector2 removedPosition in removedTiles) {
+			visiblePoints.Remove (removedPosition);
 		}
 
 		return visiblePoints;
@@ -51,6 +64,20 @@ public class Entity {
 			default:
 				return true;
 		}
+	}
+
+	public bool IsBlocked(World world, Vector2 position) {
+
+//		float deltaX = position.x - X;
+//		float deltaY = position.y - Y;
+//
+//		Debug.DrawRay (new Vector3 (X, Y, 0), new Vector3 (deltaX, deltaY, 0), Color.green, 100f, false);
+//
+//		RaycastHit2D hit = Physics2D.Raycast (new Vector2 (X, Y), new Vector2(deltaX, deltaY));
+//
+//		Debug.Log (hit.collider) ;
+
+		return false;
 	}
 
 	public void Rotate() {

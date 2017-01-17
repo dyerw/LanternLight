@@ -10,6 +10,7 @@ public class WorldView {
 	public Sprite playerSprite;
 	public Sprite unseenGroundSprite;
 	public Sprite unseenTreeSprite;
+	public Sprite werewolfSprite;
 	Text remainingMovesText;
 
 	public WorldView() {
@@ -18,12 +19,13 @@ public class WorldView {
 		playerSprite = Resources.Load<Sprite> ("player_sprite");
 		unseenGroundSprite = Resources.Load<Sprite> ("unseen_ground");
 		unseenTreeSprite = Resources.Load<Sprite> ("unseen_tree");
+		werewolfSprite = Resources.Load<Sprite> ("werewolf");
 		remainingMovesText = GameObject.Find ("RemainingMovesText").GetComponent<Text> ();
 	}
 
-	public List<GameObject> GenerateView(World world, Entity player) {
-		List<GameObject> gameObjects = GenerateTiles (world, player);
-		gameObjects.AddRange (GenerateEntites (world.Entities));
+	public List<GameObject> GenerateView(World world) {
+		List<GameObject> gameObjects = GenerateTiles (world, world.Player);
+		gameObjects.AddRange (GenerateEntites (world, world.Entities));
 		UpdateStatsUI (world);
 		return gameObjects;
 	}
@@ -70,7 +72,7 @@ public class WorldView {
 		return tileObjects;
 	}
 
-	List<GameObject> GenerateEntites(Entity[] entities) {
+	List<GameObject> GenerateEntites(World world, List<Entity> entities) {
 		List<GameObject> gameObjects = new List<GameObject> ();
 
 		// Draw entities
@@ -80,7 +82,17 @@ public class WorldView {
 			entityGameObject.transform.position = new Vector3( entity.X, entity.Y, 0);
 
 			SpriteRenderer entitySpriteRenderer = entityGameObject.AddComponent<SpriteRenderer> ();
-			entitySpriteRenderer.sprite = playerSprite;
+
+			if (entity.Type == Entity.EntityType.PLAYER) {
+				entitySpriteRenderer.sprite = playerSprite;
+			} else {
+				if (world.Player.CalculateVisiblePoints (world).Contains (new Vector2 (entity.X, entity.Y))) {
+					entitySpriteRenderer.sprite = werewolfSprite;
+				} else {
+					entitySpriteRenderer.sprite = unseenGroundSprite;
+				}
+			}
+
 
 			gameObjects.Add (entityGameObject);
 		}
@@ -89,7 +101,7 @@ public class WorldView {
 	}
 
 	public void UpdateStatsUI(World world) {
-		remainingMovesText.text = "" + world.Entities[0].Stats.RemainingMovement;
+		remainingMovesText.text = "" + world.Player.Stats.RemainingMovement;
 	}
 }
 

@@ -14,10 +14,10 @@ public class WorldController : MonoBehaviour {
 	void Start () {
 		Debug.Log ("Starting game...");
 
-		Entity player = new Entity (10, 15);
-		Entity[] startEntities = new Entity[1];
-		startEntities [0] = player;
-		world = new World (startEntities);
+		Entity player = new Entity (Entity.EntityType.PLAYER, 10, 15);
+		List<Entity> enemies = new List<Entity> ();
+		enemies.Add(new Entity(Entity.EntityType.WEREWOLF, 11, 15));
+		world = new World (player, enemies);
 
 
 		GameObject mouseControllerGameObject = new GameObject ();
@@ -50,7 +50,7 @@ public class WorldController : MonoBehaviour {
 			}
 		}
 
-		List<GameObject> gameObjects = worldView.GenerateView (this.world, world.Entities[0]);
+		List<GameObject> gameObjects = worldView.GenerateView (this.world);
 		foreach (GameObject gameObject in gameObjects) {
 			gameObject.transform.SetParent (this.transform, true);
 		}

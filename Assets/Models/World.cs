@@ -8,7 +8,17 @@ public class World {
 	public Tile[,] tiles { get; protected set; }
 
 	// An array of all entities in the world
-	public Entity[] Entities { get; protected set; }
+	public List<Entity> Entities { 
+		get {
+			List<Entity> allEntities = new List<Entity> ();
+			allEntities.AddRange (EnemyEntities);
+			allEntities.Add (Player);
+			return allEntities;
+		}
+	}
+
+	public Entity Player { get; protected set; }
+	public List<Entity> EnemyEntities { get; protected set; }
 
 	// The tile width of the world.
 	public int Width { get; protected set; }
@@ -16,11 +26,12 @@ public class World {
 	// The tile height of the world
 	public int Height { get; protected set; }
 
-	public World(Entity[] entities, int height=30, int width=30) {
+	public World(Entity player, List<Entity> enemyEntities, int height=30, int width=30) {
 
 		Width = width;
 		Height = height;
-		Entities = entities;
+		Player = player;
+		EnemyEntities = enemyEntities;
 
 		tiles = new Tile[Width,Height];
 
