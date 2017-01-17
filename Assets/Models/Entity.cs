@@ -26,7 +26,8 @@ public class Entity {
 
 		for (int x = 0; x < world.Width; x++) {
 			for (int y = 0; y < world.Height; y++) {
-				if (Vector2.Distance (new Vector2 (x, y), new Vector2 (X, Y)) <= Stats.ViewingDistance) {
+				if (Vector2.Distance (new Vector2 (x, y), new Vector2 (X, Y)) <= Stats.ViewingDistance &&
+					InCone(X, Y, x, y)) {
 					visiblePoints.Add (new Vector2 (x, y));
 				}
 			}
@@ -34,6 +35,42 @@ public class Entity {
 
 		return visiblePoints;
 
+	}
+
+	public bool InCone(int entityX, int entityY, int targetX, int targetY) {
+		switch (this.CurrentFacing)
+		{
+			case Facing.DOWN:
+				return (entityY - targetY) >= Mathf.Abs (entityX - targetX);
+			case Facing.UP:
+				return (0 - (entityY - targetY)) >= Mathf.Abs (entityX - targetX);
+			case Facing.LEFT:
+				return Mathf.Abs (entityY - targetY) <= (entityX - targetX);
+			case Facing.RIGHT:
+				return Mathf.Abs (entityY - targetY) <= (0 - (entityX - targetX));
+			default:
+				return true;
+		}
+	}
+
+	public void Rotate() {
+		switch (this.CurrentFacing) {
+			case Facing.DOWN:
+				this.CurrentFacing = Facing.LEFT;
+				break; 
+			case Facing.UP:
+				this.CurrentFacing = Facing.RIGHT;
+				break; 
+			case Facing.LEFT:
+				this.CurrentFacing = Facing.UP;
+				break;
+			case Facing.RIGHT:
+				this.CurrentFacing = Facing.DOWN;
+				break;
+			default:
+				this.CurrentFacing = Facing.RIGHT;
+				break;
+		}
 	}
 }
 

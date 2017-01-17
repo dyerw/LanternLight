@@ -23,7 +23,12 @@ public class WorldController : MonoBehaviour {
 		GameObject mouseControllerGameObject = new GameObject ();
 		mouseController = mouseControllerGameObject.AddComponent<MouseController> ();
 		mouseController.OnTileClick = (Vector3 coordinates) => {
-			world.MoveEntity(player, coordinates);
+			if (coordinates.x == player.X && coordinates.y == player.Y) {
+				player.Rotate();
+			} else {
+				world.MoveEntity(player, coordinates);
+			}
+				
 			renderGameObjects();
 		};
 

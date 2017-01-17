@@ -46,7 +46,6 @@ public class MouseController : MonoBehaviour
 
 	Vector3 GameCoordinatesOfMouse() {
 		Vector3 coordinates = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-		Debug.Log (coordinates);
 		coordinates.x = Mathf.Floor (coordinates.x + 0.5f);
 		coordinates.y = Mathf.Floor (coordinates.y + 0.5f);
 		return coordinates;
