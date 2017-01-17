@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Pathfinding;
 
 public class Entity {
 	public enum EntityType { PLAYER, WEREWOLF }
@@ -37,12 +38,13 @@ public class Entity {
 		}
 
 		List<Vector2> removedTiles = new List<Vector2> ();
+		var aStar = GetAStarInstance (world);
 		foreach (Vector2 position in visiblePoints) {
 //			if (world.GetTileAt (position.x, position.y).Type != Tile.TileType.Empty) {
 //				BlockHidden
 //			}
 			if (world.GetTileAt ((int) position.x, (int) position.y).Type != Tile.TileType.Empty &&
-				IsBlocked(world, position)) {
+					IsBlocked(world, position, aStar)) {
 				removedTiles.Add(position);
 			}
 		}
@@ -53,11 +55,7 @@ public class Entity {
 		return visiblePoints;
 
 	}
-
-	public void BlockCastPoints(World world) {
 		
-	
-	}
 
 	public bool InCone(int entityX, int entityY, int targetX, int targetY) {
 		switch (this.CurrentFacing)
@@ -76,13 +74,14 @@ public class Entity {
 	}
 		
 
-	public bool IsBlocked(World world, Vector2 targetPosition) {
+	public bool IsBlocked(World world, Vector2 targetPosition, 
+			SpatialAStar<SearchPathNode, System.Object> aStar) {
 		Vector2 startPos = new Vector2 (X, Y);
-		int tileDist = Vector2.Distance (startPos, targetPosition);
-		int pathDist = WorldController.GetAStarInstance()
-			.Search(startPos, targetPosition, null).Count;
+		int tileDist = (int)Vector2.Distance (startPos, targetPosition);
+		var pathDist = aStar.Search (startPos, targetPosition, null);
 
-		return false;
+
+		return pathDist == null || pathDist.Count > tileDist; 
 	}
 
 
@@ -106,5 +105,16 @@ public class Entity {
 				break;
 		}
 	}
+
+	public SpatialAStar<SearchPathNode, System.Object> GetAStarInstance(World world) {
+		SearchPathNode[,] searchGrid = new SearchPathNode[world.Width, world.Height];
+		for(int x = 0; x < world.Width; x++){
+			for(int y = 0; y < world.Height; y++){
+				searchGrid [x, y] = new SearchPathNode (world.GetTileAt (x, y));
+			}
+		}
+		return new SpatialAStar<SearchPathNode, System.Object> (searchGrid);
+	}
+		
 }
 

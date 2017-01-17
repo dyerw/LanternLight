@@ -146,8 +146,8 @@ namespace Pathfinding
         /// </summary>
 		public LinkedList<TPathNode> Search(Vector2 inStartNode, Vector2 inEndNode, TUserContext inUserContext)
         {
-			PathNode startNode = m_SearchSpace[inStartNode.x, inStartNode.y];
-            PathNode endNode = m_SearchSpace[inEndNode.x, inEndNode.y];
+			PathNode startNode = m_SearchSpace[(int)inStartNode.x, (int)inStartNode.y];
+			PathNode endNode = m_SearchSpace[(int)inEndNode.x, (int)inEndNode.y];
 
             //System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
             //watch.Start();

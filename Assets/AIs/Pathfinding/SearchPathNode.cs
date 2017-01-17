@@ -6,7 +6,7 @@ namespace Pathfinding
 	{
 		public bool Pathable { get; set;}
 		public SearchPathNode(Tile tile) {
-			Pathable = tile.GetType == Tile.TileType.Empty;
+			Pathable = tile.Type == Tile.TileType.Empty;
 		}
 
 		public bool IsWalkable(Object unused) {

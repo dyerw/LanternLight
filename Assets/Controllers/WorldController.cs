@@ -8,7 +8,7 @@ public class WorldController : MonoBehaviour {
 	MouseController mouseController;
 	WorldView worldView;
 	World world;
-	private SpatialAStar<SearchPathNode, Object> aStar;
+	private SpatialAStar<SearchPathNode, System.Object> aStar;
 
 	public Sprite mouseCursorSprite;
 
