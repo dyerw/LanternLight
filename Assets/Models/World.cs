@@ -73,6 +73,23 @@ public class World {
 		}
 	}
 
+	public List<Vector2> GetBlockingTiles() {
+		List<Vector2> blockingTiles = new List<Vector2> ();
+		foreach (Entity entity in EnemyEntities) {
+			blockingTiles.Add(new Vector2(entity.X, entity.Y));
+		}
+
+		for (int x = 0; x < Width; x++) {
+			for (int y = 0; y < Height; y++) {
+				if (GetTileAt (x, y).Type != Tile.TileType.Empty) {
+					blockingTiles.Add (new Vector2 (x, y));
+				}
+			}
+		}
+
+		return blockingTiles;
+	}
+
 	public bool ContainsEnemy(Vector3 position) {
 		foreach (Entity enemy in EnemyEntities) {
 			if (enemy.X == position.x && enemy.Y == position.y) {

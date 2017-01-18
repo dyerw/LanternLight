@@ -15,7 +15,7 @@ public class WorldController : MonoBehaviour {
 	void Start () {
 		Debug.Log ("Starting game...");
 
-		Entity player = new Entity (Entity.EntityType.PLAYER, 10, 15);
+		Entity player = new Entity (Entity.EntityType.PLAYER, 5, 5);
 		List<Entity> enemies = new List<Entity> ();
 		enemies.Add(new Entity(Entity.EntityType.WEREWOLF, 11, 15));
 		world = new World (player, enemies);
