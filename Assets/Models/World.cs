@@ -37,7 +37,7 @@ public class World {
 
 		for (int x = 0; x < Width; x++) {
 			for (int y = 0; y < Height; y++) {
-				Tile.TileType tileType = Random.Range(0, 5) == 0 ? Tile.TileType.Tree : Tile.TileType.Empty;
+				Tile.TileType tileType = Random.Range(0, 10) == 0 ? Tile.TileType.Tree : Tile.TileType.Empty;
 				tiles[x,y] = new Tile(tileType);
 			}
 		}

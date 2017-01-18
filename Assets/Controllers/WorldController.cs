@@ -28,7 +28,9 @@ public class WorldController : MonoBehaviour {
 			if (coordinates.x == player.X && coordinates.y == player.Y) {
 				player.Rotate();
 			} else if (world.GetTileAt((int) coordinates.x,(int) coordinates.y).Type == Tile.TileType.Empty) {
-				world.MoveEntity(player, coordinates);
+				if (Vector2.Distance(new Vector2(coordinates.x, coordinates.y), new Vector2(world.Player.X, world.Player.Y)) == 1) {
+					world.MoveEntity(player, coordinates);
+				}
 			}
 				
 			renderGameObjects();
