@@ -23,6 +23,26 @@ public class Entity {
 		Stats = new Stats (8);
 	}
 
+	public bool CanAttack() {
+		return Stats.RemainingMovement >= Stats.EnergyAttackCost;
+	}
+
+	public int MakeAttack() {
+		Stats.RemainingMovement = Stats.RemainingMovement - Stats.EnergyAttackCost;
+		return Stats.Damage;
+	}
+
+	public void TakeDamage(int damage) {
+		Stats.CurrentHealth = Stats.CurrentHealth - damage;
+		if (Stats.CurrentHealth < 0) {
+			Stats.CurrentHealth = 0;
+		}
+	}
+
+	public bool IsDead() {
+		return Stats.CurrentHealth == 0;
+	}
+
 	public List<Vector2> CalculateVisiblePoints(World world) {
 
 		List<Vector2> visiblePoints = new List<Vector2> ();
@@ -107,23 +127,23 @@ public class Entity {
 			float xTopPoint = ((blocker.y + 1) - b) / slope;
 
 			if (yLeftPoint > blocker.y && yLeftPoint < blocker.y + 1) {
-				Debug.Log ("yl Obstacle at (" + blocker.x + "," + blocker.y + ") blocked tile at (" + x1 + "," + y1 + ")" +
-					" at point (" + blocker.x + "," + yLeftPoint + ")" ); 
+//				Debug.Log ("yl Obstacle at (" + blocker.x + "," + blocker.y + ") blocked tile at (" + x1 + "," + y1 + ")" +
+//					" at point (" + blocker.x + "," + yLeftPoint + ")" ); 
 				return true;
 			}
 			if (yRightPoint > blocker.y && yRightPoint < blocker.y + 1) {
-				Debug.Log ("yr Obstacle at (" + blocker.x + "," + blocker.y + ") blocked tile at (" + x1 + "," + y1 + ")" +
-					" at point (" + blocker.x + "," + yRightPoint + ")" ); 
+//				Debug.Log ("yr Obstacle at (" + blocker.x + "," + blocker.y + ") blocked tile at (" + x1 + "," + y1 + ")" +
+//					" at point (" + blocker.x + "," + yRightPoint + ")" ); 
 				return true;
 			}
 			if (xBottomPoint > blocker.x && xBottomPoint < blocker.x + 1) {
-				Debug.Log ("xb Obstacle at (" + blocker.x + "," + blocker.y + ") blocked tile at (" + x1 + "," + y1 + ")" +
-					" at point (" + xBottomPoint + "," + blocker.y + ")" ); 
+//				Debug.Log ("xb Obstacle at (" + blocker.x + "," + blocker.y + ") blocked tile at (" + x1 + "," + y1 + ")" +
+//					" at point (" + xBottomPoint + "," + blocker.y + ")" ); 
 				return true;
 			}
 			if (xTopPoint > blocker.x && xBottomPoint < blocker.x + 1) {
-				Debug.Log ("xt Obstacle at (" + blocker.x + "," + blocker.y + ") blocked tile at (" + x1 + "," + y1 + ")" +
-					" at point (" + xTopPoint + "," + blocker.y + ")" ); 
+//				Debug.Log ("xt Obstacle at (" + blocker.x + "," + blocker.y + ") blocked tile at (" + x1 + "," + y1 + ")" +
+//					" at point (" + xTopPoint + "," + blocker.y + ")" ); 
 				return true;
 			}
 

@@ -17,6 +17,21 @@ public class World {
 		}
 	}
 
+	public List<Entity> AliveEntities {
+		get {
+			List<Entity> aliveEntities = new List<Entity> ();
+			foreach (Entity entity in EnemyEntities) {
+				if (!entity.IsDead ()) {
+					aliveEntities.Add (entity);
+				}
+			}
+			if (!Player.IsDead()) {
+				aliveEntities.Add (Player);
+			}
+			return aliveEntities;
+		}
+	}
+
 	public Entity Player { get; protected set; }
 	public List<Entity> EnemyEntities { get; protected set; }
 
@@ -44,6 +59,16 @@ public class World {
 
 		Debug.Log ("World created with " + (Width*Height) + " tiles.");
 
+	}
+
+	public Entity GetEntityAt(Vector3 position) {
+		foreach (Entity entity in Entities) {
+			if (position.x == entity.X && position.y == entity.Y) {
+				return entity;
+			}
+		}
+		Debug.LogError ("No entity found at position (" + position.x + "," + position.y + ")");
+		return null;
 	}
 
 	public Tile GetTileAt(int x, int y) {
@@ -76,7 +101,9 @@ public class World {
 	public List<Vector2> GetBlockingTiles() {
 		List<Vector2> blockingTiles = new List<Vector2> ();
 		foreach (Entity entity in EnemyEntities) {
-			blockingTiles.Add(new Vector2(entity.X, entity.Y));
+			if (!entity.IsDead ()) { 
+				blockingTiles.Add (new Vector2 (entity.X, entity.Y));
+			}
 		}
 
 		for (int x = 0; x < Width; x++) {
@@ -92,7 +119,7 @@ public class World {
 
 	public bool ContainsEnemy(Vector3 position) {
 		foreach (Entity enemy in EnemyEntities) {
-			if (enemy.X == position.x && enemy.Y == position.y) {
+			if (enemy.X == position.x && enemy.Y == position.y && !enemy.IsDead()) {
 				return true;
 			}
 		}

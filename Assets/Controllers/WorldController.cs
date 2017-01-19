@@ -17,7 +17,7 @@ public class WorldController : MonoBehaviour {
 
 		Entity player = new Entity (Entity.EntityType.PLAYER, 5, 5);
 		List<Entity> enemies = new List<Entity> ();
-		enemies.Add(new Entity(Entity.EntityType.WEREWOLF, 11, 15));
+		enemies.Add(new Entity(Entity.EntityType.WEREWOLF, 6, 6));
 		world = new World (player, enemies);
 
 
@@ -25,7 +25,9 @@ public class WorldController : MonoBehaviour {
 		mouseController = mouseControllerGameObject.AddComponent<MouseController> ();
 		mouseController.world = world;
 		mouseController.OnTileClick = (Vector3 coordinates) => {
-			if (coordinates.x == player.X && coordinates.y == player.Y) {
+			if (world.ContainsEnemy(coordinates)) {
+				Actions.Attack(player, world.GetEntityAt(coordinates));
+			} else if (coordinates.x == player.X && coordinates.y == player.Y) {
 				player.Rotate();
 			} else if (world.GetTileAt((int) coordinates.x,(int) coordinates.y).Type == Tile.TileType.Empty) {
 				if (Vector2.Distance(new Vector2(coordinates.x, coordinates.y), new Vector2(world.Player.X, world.Player.Y)) == 1) {

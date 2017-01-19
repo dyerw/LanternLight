@@ -25,7 +25,7 @@ public class WorldView {
 
 	public List<GameObject> GenerateView(World world) {
 		List<GameObject> gameObjects = GenerateTiles (world, world.Player);
-		gameObjects.AddRange (GenerateEntites (world, world.Entities));
+		gameObjects.AddRange (GenerateEntites (world, world.AliveEntities));
 		UpdateStatsUI (world);
 		return gameObjects;
 	}
@@ -38,9 +38,9 @@ public class WorldView {
 		// Create terrain
 		for (int x = 0; x < world.Width; x++) {
 			for (int y = 0; y < world.Height; y++) {
-				if (world.EntityOnTile (x, y)) {
-					continue;
-				}
+//				if (world.EntityOnTile (x, y)) {
+//					continue;
+//				}
 
 				Tile tile = world.GetTileAt (x, y);
 
@@ -79,7 +79,7 @@ public class WorldView {
 		foreach (Entity entity in entities) {
 			GameObject entityGameObject = new GameObject(); 
 			entityGameObject.name = "Player";
-			entityGameObject.transform.position = new Vector3( entity.X, entity.Y, 0);
+			entityGameObject.transform.position = new Vector3( entity.X, entity.Y, -1);
 
 			SpriteRenderer entitySpriteRenderer = entityGameObject.AddComponent<SpriteRenderer> ();
 
