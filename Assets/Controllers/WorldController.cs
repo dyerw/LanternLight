@@ -17,9 +17,8 @@ public class WorldController : MonoBehaviour {
 
 		Entity player = new Entity (Entity.EntityType.PLAYER, 5, 5);
 		List<Entity> enemies = new List<Entity> ();
-		enemies.Add(new Entity(Entity.EntityType.WEREWOLF, 6, 6));
+		enemies.Add(new Entity(Entity.EntityType.WEREWOLF, 10, 10));
 		world = new World (player, enemies);
-
 
 		GameObject mouseControllerGameObject = new GameObject ();
 		mouseController = mouseControllerGameObject.AddComponent<MouseController> ();

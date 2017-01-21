@@ -85,7 +85,7 @@ public class World {
 		return false;
 	}
 
-	public void MoveEntity(Entity entity, Vector3 newPosition) {
+	public void MoveEntity(Entity entity, Vector2 newPosition) {
 		foreach (Entity entity2 in Entities) {
 			if (entity2 == entity) {
 				float distance = Mathf.Floor (Vector2.Distance (new Vector2 (entity.X, entity.Y), new Vector2(newPosition.x, newPosition.y)));
@@ -127,6 +127,10 @@ public class World {
 	}
 
 	public void EndTurn() {
+		foreach (Entity entity in EnemyEntities) {
+			WerewolfAI.TakeTurn (entity, this);
+		}
+
 		foreach (Entity entity in Entities) {
 			entity.Stats.RemainingMovement = entity.Stats.MovementRange;
 		}

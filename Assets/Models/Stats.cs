@@ -13,7 +13,7 @@ public class Stats {
 
 	public Stats(int viewingDistance) {
 		ViewingDistance = viewingDistance;
-		MovementRange = RemainingMovement = 5;
+		MovementRange = RemainingMovement = 2;
 		Damage = 3;
 		MaxHealth = CurrentHealth = 10;
 		EnergyAttackCost = 2;

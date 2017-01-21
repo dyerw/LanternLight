@@ -58,8 +58,6 @@ public class MouseController : MonoBehaviour
 		Vector3 mousePosition = GameCoordinatesOfMouse();
 		bool containsEnemy = world.ContainsEnemy (mousePosition) && world.Player.CalculateVisiblePoints(world).Contains(new Vector2(mousePosition.x, mousePosition.y));
 		mouseCursor.GetComponent<SpriteRenderer> ().sprite = containsEnemy ? enemyCursorSprite : cursorSprite;
-		Debug.Log (containsEnemy);
-		Debug.Log (mouseCursor.GetComponent<SpriteRenderer> ().sprite);
 
 		mouseCursor.transform.position = new Vector3 (mousePosition.x, mousePosition.y, -2);
 	}
