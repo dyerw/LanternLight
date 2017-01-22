@@ -11,6 +11,7 @@ public class WorldView {
 	public Sprite unseenGroundSprite;
 	public Sprite unseenTreeSprite;
 	public Sprite werewolfSprite;
+	public Sprite healthBarSprite;
 	Text remainingMovesText;
 
 	public WorldView() {
@@ -20,12 +21,14 @@ public class WorldView {
 		unseenGroundSprite = Resources.Load<Sprite> ("unseen_ground");
 		unseenTreeSprite = Resources.Load<Sprite> ("unseen_tree");
 		werewolfSprite = Resources.Load<Sprite> ("werewolf");
+		healthBarSprite = Resources.Load<Sprite> ("healthbar");
 		remainingMovesText = GameObject.Find ("RemainingMovesText").GetComponent<Text> ();
 	}
 
 	public List<GameObject> GenerateView(World world) {
 		List<GameObject> gameObjects = GenerateTiles (world, world.Player);
 		gameObjects.AddRange (GenerateEntites (world, world.AliveEntities));
+		gameObjects.AddRange (DrawHealthBars (world.AliveEntities));
 		UpdateStatsUI (world);
 		return gameObjects;
 	}
@@ -103,5 +106,25 @@ public class WorldView {
 	public void UpdateStatsUI(World world) {
 		remainingMovesText.text = "" + world.Player.Stats.RemainingMovement;
 	}
+
+	public List<GameObject> DrawHealthBars(List<Entity> entities) {
+		List<GameObject> gameObjects = new List<GameObject> ();
+
+		foreach (Entity entity in entities) {
+			GameObject entityGameObject = new GameObject (); 
+			entityGameObject.name = "HealthBar";
+			entityGameObject.transform.position = new Vector3 (entity.X, entity.Y, -2);
+			SpriteRenderer entitySpriteRenderer = entityGameObject.AddComponent<SpriteRenderer> ();
+			entitySpriteRenderer.sprite = healthBarSprite;
+
+			float healthPercentage = (float) entity.Stats.CurrentHealth / (float) entity.Stats.MaxHealth;
+			entityGameObject.transform.localScale = new Vector3 (healthPercentage, 1, 1);
+
+			gameObjects.Add (entityGameObject);
+		}
+
+		return gameObjects;
+	}
+
 }
 

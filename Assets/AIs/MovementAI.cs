@@ -10,7 +10,7 @@ public class MovementAI
 		world.MoveEntity (entity, path [entity.Stats.RemainingMovement]);
 	}
 
-	static List<Vector2> GetNeighbors(Vector2 vector, World world) {
+	static List<Vector2> GetNeighbors(Vector2 vector, Vector2 destination, World world) {
 		List<Vector2> neighbors = new List<Vector2> ();
 		neighbors.Add (new Vector2 (vector.x + 1, vector.y));
 		neighbors.Add (new Vector2 (vector.x - 1, vector.y));
@@ -22,7 +22,9 @@ public class MovementAI
 		neighbors.Add (new Vector2 (vector.x - 1, vector.y - 1));
 
 		foreach (Vector2 blocker in world.GetBlockingTiles()) {
-			neighbors.Remove (blocker);
+			if (blocker != destination) {
+				neighbors.Remove (blocker);
+			}
 		}
 		return neighbors;
 	} 
@@ -64,7 +66,7 @@ public class MovementAI
 			openSet.Remove (current);
 			closedSet.Add (current);
 
-			foreach (Vector2 neighbor in GetNeighbors(current, world)) {
+			foreach (Vector2 neighbor in GetNeighbors(current, destination, world)) {
 				if (closedSet.Contains(neighbor)) {
 					continue;
 				}
@@ -76,8 +78,8 @@ public class MovementAI
 				} else if (tentativeGScore >= gScore [neighbor]) {
 					continue;
 				}
-
-				cameFrom.Add (neighbor, current);
+					
+				cameFrom [neighbor] = current;
 				gScore [neighbor] = tentativeGScore;
 				fScore[neighbor] = gScore[neighbor] + (int) Vector2.Distance(neighbor, destination);
 

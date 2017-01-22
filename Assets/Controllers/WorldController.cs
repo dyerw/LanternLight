@@ -73,6 +73,6 @@ public class WorldController : MonoBehaviour {
 		world.EndTurn ();
 		renderGameObjects ();
 	}
-
+		
 }
 

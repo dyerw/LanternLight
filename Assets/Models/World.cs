@@ -105,6 +105,7 @@ public class World {
 				blockingTiles.Add (new Vector2 (entity.X, entity.Y));
 			}
 		}
+		blockingTiles.Add (new Vector2 (Player.X, Player.Y));
 
 		for (int x = 0; x < Width; x++) {
 			for (int y = 0; y < Height; y++) {
