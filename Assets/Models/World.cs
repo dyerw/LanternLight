@@ -89,7 +89,7 @@ public class World {
 		foreach (Entity entity2 in Entities) {
 			if (entity2 == entity) {
 				float distance = Mathf.Floor (Vector2.Distance (new Vector2 (entity.X, entity.Y), new Vector2(newPosition.x, newPosition.y)));
-				if (entity.Stats.RemainingMovement >= distance) {
+				if (entity.Stats.RemainingMovement >= distance && !GetBlockingTiles().Contains(newPosition)) {
 					entity.X = (int)newPosition.x;
 					entity.Y = (int)newPosition.y;
 					entity.Stats.RemainingMovement = (int) (entity.Stats.RemainingMovement - distance);

@@ -97,7 +97,9 @@ public class Entity {
 		float slope = deltaY / deltaX;
 		float b = y1 - (slope * x1);
 
-		foreach (Vector2 blocker in world.GetBlockingTiles()) {
+		List<Vector2> blockingTiles = world.GetBlockingTiles ();
+		blockingTiles.Remove (new Vector2 (world.Player.X, world.Player.Y));
+		foreach (Vector2 blocker in blockingTiles) {
 			if (!InCone (X, Y, (int) blocker.x, (int) blocker.y)) {
 				continue;
 			}
